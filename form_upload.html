@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>上传文件</title>
+	</head>
+    <style>
+    	#all_img img{
+    		width: 100px;
+    		height: 100px;
+    		margin: 10px;
+    		border: 1px solid gdarkgray;
+    	}
+    </style>
+	<body>
+		<h4>form表单上传，使用jquery.form.js插件，接收返回</h4>
+        <a href="https://www.cnblogs.com/good10000/p/4729697.html">参考链接</a>
+		<form id="myForm" action="01.php" method="post" enctype="multipart/form-data">
+			<input type="file" name="img" />
+			<input id="btn" type="submit" value="上传" />
+		</form>
+		<p id="all_img"></p>
+	</body>
+	<script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
+	<script type="text/javascript" src="js/jquery.form.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$("#btn").click(function() {
+				$("#myForm").ajaxSubmit({
+					"url": '01.php',
+					"type": 'POST',
+					"dataType":"JSON",
+					"beforeSubmit": function(){
+						console.log('提交前');
+					},
+					"success":function(data){
+						console.log('提交后返回');
+						if(data["status"]){
+							var img = document.createElement('img');
+							img.setAttribute('src',data["src"]);
+							var allImg = document.getElementById('all_img');
+							allImg.appendChild(img);
+						}else{
+							console.log(data["tip"]);
+						}
+					},
+					"resetForm": true
+				});
+				return false;
+			});
+		});
+	</script>
+
+</html>
